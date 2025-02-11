@@ -1,73 +1,89 @@
 import Link from "next/link";
 import React from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const Footer = () => {
   return (
-    <footer className="w-full py-10">
-      <div className="w-full max-w-screen-xl mx-auto flex justify-between items-center gap-x-6">
-        {/* info  */}
-        <div>
-          <h1>About</h1>
-          <p>
+    <footer className="w-full py-12 mt-10">
+      <div className="w-full max-w-screen-xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Info Section */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold">About</h2>
+          <p className="text-muted-foreground">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-            cupiditate ab optio voluptatem ipsam quibusdam.
+            cupiditate ab optio voluptatem ipsam quibusdam. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam, sit.
           </p>
-          <p>Email: Yogesh Shrestha</p>
-          <p>Mobile: 986676543</p>
+          <div className="space-y-2">
+            <p className="flex items-center gap-2">
+              <span className="font-medium">Email:</span>
+              <span className="text-muted-foreground">Yogesh Shrestha</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="font-medium">Mobile:</span>
+              <span className="text-muted-foreground">986676543</span>
+            </p>
+          </div>
         </div>
-        {/* links  */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1>Quick Links</h1>
-            <ul>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
+
+        {/* Links Section */}
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">Quick Links</h2>
+            <ul className="space-y-2">
+              {['Entertainment', 'Sports', 'Technology', 'Business', 'Lifestyle'].map((item, index) => (
+                <li key={index}>
+                  <Link 
+                    href="#" 
+                    className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          <div>
-            <h1>Categories</h1>
-            <ul>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
-              <li>
-                <Link href="#">Entertainment</Link>
-              </li>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">Categories</h2>
+            <ul className="space-y-2">
+              {['World News', 'Politics', 'Health', 'Science', 'Culture'].map((item, index) => (
+                <li key={index}>
+                  <Link 
+                    href="#" 
+                    className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        {/* news letter  */}
-        <div>
-          <h1>Weekly Newsletter</h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          <form action="">
-            <input type="text" />
-            <button>Subscribe</button>
+        {/* Newsletter Section */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold">Weekly Newsletter</h2>
+          <p className="text-muted-foreground">
+            Get the latest news and updates delivered straight to your inbox.
+          </p>
+          <form className="space-y-4">
+            <Input 
+              type="email" 
+              placeholder="Enter your email"
+              className="bg-background"
+            />
+            <Button className="w-full">
+              Subscribe
+            </Button>
           </form>
         </div>
+      </div>
+
+      {/* Copyright Section */}
+      <div className="w-full max-w-screen-xl mx-auto px-4 mt-12 pt-6 border-t">
+        <p className="text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} All rights reserved.
+        </p>
       </div>
     </footer>
   );
