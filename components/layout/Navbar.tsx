@@ -32,11 +32,12 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="flex gap-x-4">
-            <Button>
+            <Button variant="outline">
               <Plus /> Create
             </Button>
-            <Button>Sign Up</Button>
-            <Button>Sign In</Button>
+            <Button>
+              <Link href="/register">Join Now</Link>
+            </Button>
           </div>
           <ThemeToggle />
           <div>
