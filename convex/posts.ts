@@ -11,6 +11,11 @@ import { v } from "convex/values";
 
 const zMutation = zCustomMutation(mutation, NoOp);
 
+//generateUploadUrl
+export const generateUploadUrl = mutation(async (ctx) => {
+  return await ctx.storage.generateUploadUrl();
+});
+
 //get posts
 export const getPosts = query({
   handler: async (ctx) => {
