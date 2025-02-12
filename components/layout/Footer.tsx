@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const Footer = () => {
   return (
-    <footer className="w-full py-12 mt-10">
+    <footer className="w-full py-5 mt-14">
       <div className="w-full max-w-screen-xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Info Section */}
         <div className="space-y-4">

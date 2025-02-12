@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -17,9 +18,11 @@ const Hero = () => {
             journey today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg">Get Started</Button>
+            <Button size="lg">
+              <Link href="/register">Get Started</Link>
+            </Button>
             <Button size="lg" variant="outline">
-              Learn More
+              <Link href="/explore">Explore Now</Link>
             </Button>
           </div>
         </div>

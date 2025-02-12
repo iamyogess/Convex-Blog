@@ -26,7 +26,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-10 max-w-md border rounded-lg">
+    <div className="container mx-auto px-4 py-8 mt-28 max-w-md lg:border rounded-lg">
       <div className="space-y-3 text-center">
         <h1 className="text-2xl font-bold">Create Account</h1>
         <p className="text-muted-foreground">
