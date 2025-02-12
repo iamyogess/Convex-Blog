@@ -61,12 +61,14 @@ const Navbar = () => {
           </ul>
 
           <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              className="hidden bg-transparent sm:flex items-center gap-2 shadow-md"
-            >
-              <SquarePen className="h-4 w-4" /> Write
-            </Button>
+            <Link href="/new-story">
+              <Button
+                variant="outline"
+                className="hidden bg-transparent sm:flex items-center gap-2 shadow-md"
+              >
+                <SquarePen className="h-4 w-4" /> Write
+              </Button>
+            </Link>
             <ThemeToggle />
             <div>
               <DropdownMenu>
