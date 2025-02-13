@@ -21,7 +21,6 @@ import { Facebook, Github, Instagram } from "lucide-react";
 
 
 const Register = () => {
-
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
   });

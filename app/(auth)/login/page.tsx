@@ -18,8 +18,13 @@ import { useForm } from "react-hook-form";
 import { Github } from "lucide-react";
 import { Facebook } from "lucide-react";
 import { Instagram } from "lucide-react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useState } from "react";
 
 const Login = () => {
+  const { signIn } = useAuthActions();
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
   });
@@ -95,10 +100,15 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center items-center gap-x-3">
-          <Button>
-            <div>
-              <Github className="h-6 w-6" />
-            </div>
+          <Button
+            onClick={async () => {
+              // setIsLoading(true);
+              void signIn("github", {
+                redirectTo: "/",
+              });
+            }}
+          >
+            <Github className="h-6 w-6" />
           </Button>
           <Button>
             <div>
