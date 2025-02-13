@@ -15,7 +15,6 @@ export const updatePostSchema = z.object({
   title: z
     .string()
     .min(3, { message: "Title should contain at least 3 characters!" }),
-  images: z.string().optional(),
   content: z
     .string()
     .min(10, { message: "At least 10 characters are required!" }),

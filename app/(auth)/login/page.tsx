@@ -15,6 +15,9 @@ import { Separator } from "@/components/ui/separator";
 import { signInSchema } from "@/schemas/signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Github } from "lucide-react";
+import { Facebook } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 const Login = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -89,6 +92,24 @@ const Login = () => {
               or continue with
             </span>
           </div>
+        </div>
+
+        <div className="flex justify-center items-center gap-x-3">
+          <Button>
+            <div>
+              <Github className="h-6 w-6" />
+            </div>
+          </Button>
+          <Button>
+            <div>
+              <Facebook className="h-6 w-6" />
+            </div>
+          </Button>
+          <Button>
+            <div>
+              <Instagram className="h-6 w-6" />
+            </div>
+          </Button>
         </div>
 
         <div className="text-center mt-6">
