@@ -1,13 +1,12 @@
 import { mutation, query } from "./_generated/server";
+import { zCustomMutation } from "convex-helpers/server/zod";
+import { NoOp } from "convex-helpers/server/customFunctions";
+import { v } from "convex/values";
 import {
   createPostSchema,
   updatePostSchema,
   deletePostSchema,
-  getAPostSchema,
-} from "@/schemas/postSchema";
-import { zCustomMutation } from "convex-helpers/server/zod";
-import { NoOp } from "convex-helpers/server/customFunctions";
-import { v } from "convex/values";
+} from "../schemas/postSchema";
 
 const zMutation = zCustomMutation(mutation, NoOp);
 
@@ -43,7 +42,6 @@ export const createPost = zMutation({
   handler: async (ctx, args) => {
     return ctx.db.insert("posts", {
       title: args.title,
-      images: args.images,
       content: args.content,
       category: args.category,
     });
@@ -56,7 +54,6 @@ export const updatePost = zMutation({
   handler: async (ctx, args) => {
     return ctx.db.patch(args.id, {
       title: args.title,
-      images: args.images,
       content: args.content,
       category: args.category,
     });

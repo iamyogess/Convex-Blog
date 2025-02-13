@@ -1,5 +1,6 @@
-"use client";
+"use client"
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -15,8 +16,12 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { Facebook, Github, Instagram } from "lucide-react";
+
+
 
 const Register = () => {
+
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
   });
@@ -103,6 +108,24 @@ const Register = () => {
               or continue with
             </span>
           </div>
+        </div>
+
+        <div className="flex justify-center items-center gap-x-3">
+          <Button>
+            <div>
+              <Github className="h-6 w-6" />
+            </div>
+          </Button>
+          <Button>
+            <div>
+              <Facebook className="h-6 w-6" />
+            </div>
+          </Button>
+          <Button>
+            <div>
+              <Instagram  className="h-6 w-6"/>
+            </div>
+          </Button>
         </div>
 
         <div className="text-center mt-6">

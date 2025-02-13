@@ -15,9 +15,8 @@ import { Image } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z, ZodIssue } from "zod";
 import { createPostSchema } from "@/schemas/postSchema";
-import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ConvexError } from "convex/values";
+import { useMutation } from "convex/react";
 
 const NewStory = () => {
   const createPost = useMutation(api.posts.createPost);
