@@ -1,13 +1,9 @@
 "use client"
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { signUpSchema } from "@/schemas/signUpSchema";
-import { z } from "zod";
 import { Separator } from "@/components/ui/separator";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -16,17 +12,42 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Facebook, Github, Instagram } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Github, Facebook, Instagram } from "lucide-react";
+import { useAuthActions } from "@convex-dev/auth/react";
 
-
+// Define the schema for the sign up form
+const signUpSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z.string().min(3, "Username must be at least 3 characters"),
+});
 
 const Register = () => {
+  const { signIn } = useAuthActions();
+  
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      username: "",
+    },
   });
 
-  const handleSubmit = (data: z.infer<typeof signUpSchema>) => {
-    return data;
+  const handleSubmit = async (data: z.infer<typeof signUpSchema>) => {
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("flow", "signUp");
+    
+    try {
+      await signIn("password", formData);
+    } catch (error) {
+      console.error("Sign up error:", error);
+      // You might want to handle the error appropriately here
+    }
   };
 
   return (
@@ -122,7 +143,7 @@ const Register = () => {
           </Button>
           <Button>
             <div>
-              <Instagram  className="h-6 w-6"/>
+              <Instagram className="h-6 w-6" />
             </div>
           </Button>
         </div>
@@ -142,4 +163,5 @@ const Register = () => {
     </div>
   );
 };
+
 export default Register;

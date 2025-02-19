@@ -23,14 +23,26 @@ import { useState } from "react";
 
 const Login = () => {
   const { signIn } = useAuthActions();
-  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleSubmit = (data: z.infer<typeof signInSchema>) => {
-    return data;
+  const handleSubmit = async (data: z.infer<typeof signInSchema>) => {
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("flow", "signIn");
+
+    try {
+      await signIn("password", formData);
+    } catch (error) {
+      console.error("Sign up error:", error);
+    }
   };
 
   return (
@@ -48,18 +60,12 @@ const Login = () => {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
-                    Username
-                  </FormLabel>
+                  <FormLabel className="text-sm font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Enter username"
-                      {...field}
-                    />
+                    <Input type="text" placeholder="Enter email" {...field} />
                   </FormControl>
                 </FormItem>
               )}
