@@ -38,6 +38,7 @@ const Register = () => {
 
   const handleSubmit = async (data: z.infer<typeof signUpSchema>) => {
     const formData = new FormData();
+    formData.append("name", data.username);
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("flow", "signUp");
@@ -46,7 +47,6 @@ const Register = () => {
       await signIn("password", formData);
     } catch (error) {
       console.error("Sign up error:", error);
-      // You might want to handle the error appropriately here
     }
   };
 
