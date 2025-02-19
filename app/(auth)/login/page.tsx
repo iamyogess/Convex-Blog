@@ -18,14 +18,31 @@ import { useForm } from "react-hook-form";
 import { Github } from "lucide-react";
 import { Facebook } from "lucide-react";
 import { Instagram } from "lucide-react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useState } from "react";
 
 const Login = () => {
+  const { signIn } = useAuthActions();
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleSubmit = (data: z.infer<typeof signInSchema>) => {
-    return data;
+  const handleSubmit = async (data: z.infer<typeof signInSchema>) => {
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("flow", "signIn");
+
+    try {
+      await signIn("password", formData);
+    } catch (error) {
+      console.error("Sign up error:", error);
+    }
   };
 
   return (
@@ -43,18 +60,12 @@ const Login = () => {
           >
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
-                    Username
-                  </FormLabel>
+                  <FormLabel className="text-sm font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Enter username"
-                      {...field}
-                    />
+                    <Input type="text" placeholder="Enter email" {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -95,10 +106,15 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center items-center gap-x-3">
-          <Button>
-            <div>
-              <Github className="h-6 w-6" />
-            </div>
+          <Button
+            onClick={async () => {
+              // setIsLoading(true);
+              void signIn("github", {
+                redirectTo: "/",
+              });
+            }}
+          >
+            <Github className="h-6 w-6" />
           </Button>
           <Button>
             <div>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import MainLayout from "./../components/layout/MainLayout";
+import { ConvexClientProvider } from "@/context/ConvexClientProvider";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -13,10 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <MainLayout>{children}</MainLayout>
-      </body>
-    </html>
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <body>
+          <ConvexClientProvider>
+            <MainLayout>{children}</MainLayout>
+          </ConvexClientProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }

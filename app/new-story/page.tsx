@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Image } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z, ZodIssue } from "zod";
+import { z } from "zod";
 import { createPostSchema } from "@/schemas/postSchema";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -24,7 +24,6 @@ const NewStory = () => {
   const form = useForm<z.infer<typeof createPostSchema>>({
     defaultValues: {
       title: "",
-      images: "",
       content: "",
       category: "",
     },
@@ -47,7 +46,6 @@ const NewStory = () => {
     try {
       await createPost({
         title: data.title,
-        images: data.images,
         content: data.content,
         category: data.category,
       });
