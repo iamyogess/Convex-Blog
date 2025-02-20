@@ -25,12 +25,12 @@ import { Id } from "@/convex/_generated/dataModel";
 type Role = "read" | "write" | "admin";
 
 const AllUsers = () => {
-  const { toast } = useToast();
+  const allUsers = useQuery(api.users.allUsers);
   const updateRole = useMutation(api.auth.updateRole);
   const [selectedRoles, setSelectedRoles] = useState<
     Record<string, Role | undefined>
   >({});
-  const allUsers = useQuery(api.users.allUsers);
+  const { toast } = useToast();
 
   const handleUpdateRole = async (userId: Id<"users">, role: Role) => {
     try {

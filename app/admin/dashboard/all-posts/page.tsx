@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Table,
@@ -8,8 +9,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Button } from "@/components/ui/button";
+import { PencilIcon, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 const AllPosts = () => {
+  const allPosts = useQuery(api.posts.getPosts);
 
   return (
     <div className="w-full mt-24">
@@ -25,12 +32,25 @@ const AllPosts = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
+            {allPosts?.map((post) => (
+              <TableRow key={post._id}>
+                <TableCell className="font-medium">{post.title}</TableCell>
+                <TableCell>{post.category}</TableCell>
+                <TableCell>{post.content}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex gap-4">
+                    <Button variant="destructive">
+                      <Trash2 className="h-4" />
+                    </Button>
+                    <Link href="#">
+                      <Button variant="outline">
+                        <PencilIcon className="h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
