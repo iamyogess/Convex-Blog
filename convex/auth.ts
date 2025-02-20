@@ -1,7 +1,7 @@
 import GitHub from "@auth/core/providers/github";
 import { convexAuth, getAuthUserId } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
-import { VALID_ROLES } from "./lib/permissions";
+import { checkPermission, VALID_ROLES } from "./lib/permissions";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -60,11 +60,16 @@ export const getMe = query({
  */
 export const updateRole = mutation({
   args: {
+    userId: v.id("users"), // Added proper Convex ID type for users
     role: v.union(v.literal("read"), v.literal("write"), v.literal("admin")),
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Not signed in");
-    await ctx.db.patch(userId, { role: args.role });
+    const adminId = await getAuthUserId(ctx);
+    if (!adminId) throw new Error("Not signed in");
+
+    const isAdmin = await checkPermission(ctx, adminId, VALID_ROLES.ADMIN);
+    if (!isAdmin) throw new Error("You do not have permission to do that!");
+
+    await ctx.db.patch(args.userId, { role: args.role });
   },
 });
