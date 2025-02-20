@@ -14,6 +14,12 @@ export default defineSchema({
     isAnonymous: v.optional(v.boolean()),
     // Custom field.
     favoriteColor: v.optional(v.string()),
+    /*
+     * must be optional because OAuth providers don't return a role
+     */
+    role: v.optional(
+      v.union(v.literal("read"), v.literal("write"), v.literal("admin"))
+    ),
   })
     .index("email", ["email"])
     .index("phone", ["phone"]),
