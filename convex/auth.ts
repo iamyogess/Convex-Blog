@@ -2,7 +2,7 @@ import GitHub from "@auth/core/providers/github";
 import { convexAuth, getAuthUserId } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
 import { VALID_ROLES } from "./lib/permissions";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
@@ -27,6 +27,26 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
     },
   },
 });
+
+/**
+ * Query to get the currently authenticated user's data.
+ * Returns null if no user is signed in.
+ *
+ * @example
+ * // In your React component:
+ * const me = useQuery(api.auth.getMe);
+ * if (!me) return <SignInButton />;
+ */
+export const getMe = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return null;
+
+    return await ctx.db.get(userId);
+  },
+});
+
 /**
  * Mutation to update the current user's role.
  * This should typically be restricted to admin users in a real application.

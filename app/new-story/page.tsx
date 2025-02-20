@@ -16,10 +16,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createPostSchema } from "@/schemas/postSchema";
 import { api } from "@/convex/_generated/api";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 
 const NewStory = () => {
   const createPost = useMutation(api.posts.createPost);
+  const isAllowedToPost = useQuery(api.auth.getMe);
+  const isBlogger = isAllowedToPost?.role === "write";
 
   const form = useForm<z.infer<typeof createPostSchema>>({
     defaultValues: {
@@ -54,6 +56,8 @@ const NewStory = () => {
       console.log("Post creation error", error);
     }
   };
+
+  if (!isBlogger) return <div className="mt-52">You are not a blogger!</div>;
 
   return (
     <div className="min-h-screen  mt-32 pb-20">

@@ -7,6 +7,8 @@ import {
   updatePostSchema,
   deletePostSchema,
 } from "../schemas/postSchema";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import { checkPermission, VALID_ROLES } from "./lib/permissions";
 
 const zMutation = zCustomMutation(mutation, NoOp);
 
@@ -40,6 +42,19 @@ export const getAPost = query({
 export const createPost = zMutation({
   args: createPostSchema.shape,
   handler: async (ctx, args) => {
+    //verify if user is authenticated
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User is not authenticated!");
+
+    //check if user has write permission
+    const hasBloggingAccess = await checkPermission(
+      ctx,
+      userId,
+      VALID_ROLES.WRITE
+    );
+    if (!hasBloggingAccess) throw new Error("You do not have access to post!");
+
+    //create a new post
     return ctx.db.insert("posts", {
       title: args.title,
       content: args.content,
@@ -52,6 +67,13 @@ export const createPost = zMutation({
 export const updatePost = zMutation({
   args: updatePostSchema.shape,
   handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("You are not authenticated!");
+
+    const hasAccess = await checkPermission(ctx, userId, VALID_ROLES.WRITE);
+    if (!hasAccess)
+      throw new Error("You do not have access to update the post!");
+
     return ctx.db.patch(args.id, {
       title: args.title,
       content: args.content,
@@ -64,6 +86,13 @@ export const updatePost = zMutation({
 export const deletePost = zMutation({
   args: deletePostSchema.shape,
   handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("You are not authenticated!");
+
+    const hasAccess = await checkPermission(ctx, userId, VALID_ROLES.WRITE);
+    if (!hasAccess)
+      throw new Error("You do not have access to delete the post!");
+
     return ctx.db.delete(args.id);
   },
 });
