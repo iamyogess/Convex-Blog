@@ -38,6 +38,36 @@ export const getAPost = query({
     return post;
   },
 });
+
+//get my posts
+export const getMyPosts = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    //verify if user is authenticated
+    const user = await getAuthUserId(ctx);
+    if (!user) throw new Error("User is not authenticated!");
+
+    //check if user has write permission
+    const hasBloggingAccess = await checkPermission(
+      ctx,
+      user,
+      VALID_ROLES.WRITE
+    );
+    if (!hasBloggingAccess)
+      throw new Error("You do not have access to view this page!");
+
+    // Use the "by_user" index we created to efficiently fetch posts
+    const posts = await ctx.db
+      .query("posts")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      // Optionally order by creation time, newest first
+      .order("desc")
+      .collect();
+
+    return posts;
+  },
+});
+
 //create post
 export const createPost = zMutation({
   args: createPostSchema.shape,
@@ -59,6 +89,7 @@ export const createPost = zMutation({
       title: args.title,
       content: args.content,
       category: args.category,
+      userId,
     });
   },
 });

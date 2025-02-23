@@ -23,7 +23,7 @@ const Navbar = () => {
   const user = useQuery(api.users.currentUser);
 
   return (
-    <nav className="fixed top-0 w-full h-20 bg-background/80 backdrop-blur-md border-b px-3 lg:px-0">
+    <nav className="fixed z-50 top-0 w-full h-20 bg-background/80 backdrop-blur-md border-b px-3 lg:px-0">
       <div className="w-full h-full max-w-screen-xl mx-auto  flex justify-between items-center">
         <div>
           <Link href="/" className="text-3xl font-bold">
