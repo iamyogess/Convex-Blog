@@ -21,6 +21,7 @@ import { api } from "@/convex/_generated/api";
 const Navbar = () => {
   const { signOut } = useAuthActions();
   const user = useQuery(api.users.currentUser);
+  const isAdmin = user?.role === "admin";
 
   return (
     <nav className="fixed z-50 top-0 w-full h-20 bg-background/80 backdrop-blur-md border-b px-3 lg:px-0">
@@ -35,7 +36,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
 
           <div className="flex items-center gap-4">
-            <Link href="/new-story">
+            <Link href="/user/new-story">
               <Button
                 variant="outline"
                 className="hidden bg-transparent sm:flex items-center gap-2 shadow-md"
@@ -63,11 +64,22 @@ const Navbar = () => {
                         {user?.name ?? user?.email}
                       </div>
                     </DropdownMenuItem>
+                    {isAdmin && (
+                      <DropdownMenuItem>
+                        {" "}
+                        <div className="flex gap-x-2 items-center">
+                          <LayoutDashboard className="h-4 w-4" />
+                          <Link href="/admin/dashboard/all-posts">
+                            Dashboard
+                          </Link>
+                        </div>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem>
                       {" "}
                       <div className="flex gap-x-2 items-center">
                         <LayoutDashboard className="h-4 w-4" />
-                        Dashboard
+                        <Link href="/user/manage-posts">Manage Posts</Link>
                       </div>
                     </DropdownMenuItem>
                     {/* <DropdownMenuItem>Author Verification</DropdownMenuItem> */}
