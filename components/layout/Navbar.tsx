@@ -22,6 +22,7 @@ const Navbar = () => {
   const { signOut } = useAuthActions();
   const user = useQuery(api.users.currentUser);
   const isAdmin = user?.role === "admin";
+  const isWriter = user?.role === "write";
 
   return (
     <nav className="fixed z-50 top-0 w-full h-20 bg-background/80 backdrop-blur-md border-b px-3 lg:px-0">
@@ -75,13 +76,14 @@ const Navbar = () => {
                         </div>
                       </DropdownMenuItem>
                     )}
-                    <DropdownMenuItem>
-                      {" "}
-                      <div className="flex gap-x-2 items-center">
-                        <LayoutDashboard className="h-4 w-4" />
-                        <Link href="/user/manage-posts">Manage Posts</Link>
-                      </div>
-                    </DropdownMenuItem>
+                    {isWriter && (
+                      <DropdownMenuItem>
+                        <div className="flex gap-x-2 items-center">
+                          <LayoutDashboard className="h-4 w-4" />
+                          <Link href="/user/manage-posts">Manage Posts</Link>
+                        </div>
+                      </DropdownMenuItem>
+                    )}
                     {/* <DropdownMenuItem>Author Verification</DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
