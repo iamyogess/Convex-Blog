@@ -3,6 +3,7 @@ import "./globals.css";
 import MainLayout from "./../components/layout/MainLayout";
 import { ConvexClientProvider } from "@/context/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -19,7 +20,11 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <ConvexClientProvider>
-            <MainLayout>{children}</MainLayout>
+            <MainLayout>
+              {children}
+
+              <Toaster />
+            </MainLayout>
           </ConvexClientProvider>
         </body>
       </html>
