@@ -17,6 +17,7 @@ import { z } from "zod";
 import { createPostSchema } from "@/schemas/postSchema";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
+import { toast } from "sonner";
 
 const NewStory = () => {
   const createPost = useMutation(api.posts.createPost);
@@ -52,6 +53,7 @@ const NewStory = () => {
         category: data.category,
       });
       form.reset();
+      toast("Post created!")
     } catch (error) {
       console.log("Post creation error", error);
     }
