@@ -20,12 +20,9 @@ export default function RootLayout({
       <html lang="en">
         <body>
           <ConvexClientProvider>
-            <MainLayout>
-              {children}
-
-              <Toaster />
-            </MainLayout>
+            <MainLayout>{children}</MainLayout>
           </ConvexClientProvider>
+          <Toaster />
         </body>
       </html>
     </ConvexAuthNextjsServerProvider>
