@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { LayoutDashboard, LogOut, SquarePen, User } from "lucide-react";
 import { ThemeToggle } from "../ThemeToggle";
@@ -70,7 +69,7 @@ const Navbar = () => {
                         {" "}
                         <div className="flex gap-x-2 items-center">
                           <LayoutDashboard className="h-4 w-4" />
-                          <Link href="/admin/dashboard/all-posts">
+                          <Link href="/admin/dashboard/">
                             Dashboard
                           </Link>
                         </div>

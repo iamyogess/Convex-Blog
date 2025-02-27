@@ -19,7 +19,6 @@ import { Github } from "lucide-react";
 import { Facebook } from "lucide-react";
 import { Instagram } from "lucide-react";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useState } from "react";
 
 const Login = () => {
   const { signIn } = useAuthActions();
@@ -130,7 +129,7 @@ const Login = () => {
 
         <div className="text-center mt-6">
           <p className="text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/register"
               className="font-medium underline underline-offset-4 hover:text-primary"
