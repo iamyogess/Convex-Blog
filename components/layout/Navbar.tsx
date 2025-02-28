@@ -59,19 +59,19 @@ const Navbar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                       {" "}
-                      <div className="flex gap-x-2 items-center">
-                        <User className="h-4 w-4" />
-                        {user?.name ?? user?.email}
-                      </div>
+                      <Link href="/user/profile">
+                        <div className="flex gap-x-2 items-center">
+                          <User className="h-4 w-4" />
+                          {user?.name ?? user?.email}
+                        </div>
+                      </Link>
                     </DropdownMenuItem>
                     {isAdmin && (
                       <DropdownMenuItem>
                         {" "}
                         <div className="flex gap-x-2 items-center">
                           <LayoutDashboard className="h-4 w-4" />
-                          <Link href="/admin/dashboard/">
-                            Dashboard
-                          </Link>
+                          <Link href="/admin/dashboard/">Dashboard</Link>
                         </div>
                       </DropdownMenuItem>
                     )}

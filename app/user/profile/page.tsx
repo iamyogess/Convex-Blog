@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "@/schemas/userSchema";
 import { CameraIcon } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 const Profile = () => {
   const form = useForm<z.infer<typeof userSchema>>({
@@ -98,7 +99,7 @@ const Profile = () => {
                   <FormItem>
                     <FormLabel>Bio</FormLabel>
                     <FormControl>
-                      <Input placeholder="Bio" {...field} />
+                      <Textarea placeholder="Bio" {...field} />
                     </FormControl>
                     <FormDescription>
                       This is your public display name.
