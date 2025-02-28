@@ -14,6 +14,8 @@ export default defineSchema({
     isAnonymous: v.optional(v.boolean()),
     // Custom field.
     favoriteColor: v.optional(v.string()),
+    bio: v.optional(v.string()),
+    pronouns: v.optional(v.string()),
     /*
      * must be optional because OAuth providers don't return a role
      */

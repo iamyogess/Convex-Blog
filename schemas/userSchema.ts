@@ -1,8 +1,6 @@
 import { z } from "zod";
-import { zid } from "convex-helpers/server/zod";
 
 export const userSchema = z.object({
-  id: zid("users"),
   name: z
     .string()
     .min(3, { message: "Name must be at least 3 characters long!" }),

@@ -3,7 +3,7 @@ import "./globals.css";
 import MainLayout from "./../components/layout/MainLayout";
 import { ConvexClientProvider } from "@/context/ConvexClientProvider";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Blog",
