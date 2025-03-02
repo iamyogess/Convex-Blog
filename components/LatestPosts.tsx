@@ -4,6 +4,18 @@ import React from "react";
 import BlogCard from "./BlogCard";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+
+// Define a type that matches what comes from api.posts.getPosts
+interface PostType {
+  _id: Id<"posts">;
+  creationTime: number; // This is added automatically by Convex
+  title: string;
+  content: string;
+  category: string;
+  images: string; // In createPost function, it's set to empty string if undefined
+  userId: Id<"users">;
+}
 
 const LatestPosts = () => {
   const posts = useQuery(api.posts.getPosts) || [];
@@ -28,7 +40,7 @@ const LatestPosts = () => {
   );
 };
 
-const PostWithImage = ({ post }) => {
+const PostWithImage = ({ post }: { post: PostType }) => {
   const imageUrl = useQuery(
     api.posts.getPostImageUrl,
     post.images ? { storageId: post.images } : "skip"
