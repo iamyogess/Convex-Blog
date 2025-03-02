@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Image } from "lucide-react";
+import { GalleryHorizontal } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +20,7 @@ import { createPostSchema } from "@/schemas/postSchema";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const NewStory = () => {
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -105,7 +106,7 @@ const NewStory = () => {
             onClick={form.handleSubmit(handleCreatePost)}
             className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6"
           >
-            Publish
+            {form.formState.isSubmitting ? "Publishing..." : "Publish"}
           </Button>
         </div>
       </div>
@@ -113,19 +114,21 @@ const NewStory = () => {
       <main className="max-w-screen-md mx-auto px-4 pt-24">
         <Form {...form}>
           <form className="space-y-8">
-            <div 
+            <div
               className="w-full aspect-[2/1] bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               onClick={() => imageInputRef.current?.click()}
             >
               {previewUrl ? (
-                <img 
-                  src={previewUrl} 
-                  alt="Selected cover" 
+                <Image
+                  src={previewUrl}
+                  height={400}
+                  width={600}
+                  alt="Selected cover"
                   className="w-full h-full object-cover rounded-lg"
                 />
               ) : (
                 <>
-                  <Image className="h-12 w-12 text-gray-400 mb-4" />
+                  <GalleryHorizontal className="h-12 w-12 text-gray-400 mb-4" />
                   <p className="text-gray-500 dark:text-gray-400">
                     Add a cover image
                   </p>
