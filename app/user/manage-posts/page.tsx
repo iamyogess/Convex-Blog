@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 const ManagePosts = () => {
   const currentUser = useQuery(api.users.currentUser);
@@ -38,12 +38,12 @@ const ManagePosts = () => {
     currentUser?._id ? { userId: currentUser._id } : "skip"
   );
 
-  const handleDelete = async (postId: any) => {
+  const handleDelete = async (postId:any) => {
     try {
       setDeletingPostId(postId);
       await deletePost({ id: postId });
-      toast("Post deleted successfully");
-    } catch (error) {
+      toast.success("Post deleted successfully");
+    } catch {
       toast.error("Failed to delete post. Please try again.");
     } finally {
       setDeletingPostId(null);
