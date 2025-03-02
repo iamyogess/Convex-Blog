@@ -13,8 +13,31 @@ import { checkPermission, VALID_ROLES } from "./lib/permissions";
 const zMutation = zCustomMutation(mutation, NoOp);
 
 //generateUploadUrl
-export const generateUploadUrl = mutation(async (ctx) => {
-  return await ctx.storage.generateUploadUrl();
+export const generateUploadUrl = mutation({
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated!");
+
+    const isWriter = await checkPermission(ctx, userId, VALID_ROLES.WRITE);
+    if (!isWriter) {
+      throw new Error("You do not have access to generate upload url!");
+    }
+
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
+export const getPostImageUrl = query({
+  args: {
+    storageId: v.id("_storage"),
+  },
+  handler: async (ctx, args) => {
+    const imageUrl = await ctx.storage.getUrl(args.storageId);
+    if (!imageUrl) {
+      throw new Error(`No file found for storageId: ${args.storageId}`);
+    }
+    return imageUrl; 
+  },
 });
 
 //get posts
@@ -89,6 +112,7 @@ export const createPost = zMutation({
       title: args.title,
       content: args.content,
       category: args.category,
+      images:args.images || "",
       userId,
     });
   },

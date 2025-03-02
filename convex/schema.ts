@@ -29,6 +29,7 @@ export default defineSchema({
     title: v.string(),
     content: v.string(),
     category: v.string(),
+    images: v.optional(v.string()),
     userId: v.id("users"),
   }).index("by_user", ["userId"]),
 });

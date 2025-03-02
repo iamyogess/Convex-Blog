@@ -19,6 +19,7 @@ export const updatePostSchema = z.object({
     .string()
     .min(10, { message: "At least 10 characters are required!" }),
   category: z.string(),
+  images: z.string(),
 });
 
 export const deletePostSchema = z.object({
