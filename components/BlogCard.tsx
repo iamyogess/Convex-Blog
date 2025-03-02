@@ -56,7 +56,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, imageUrl }) => {
         <div className="flex justify-between text-sm text-muted-foreground mt-2">
           <div className="flex items-center gap-2">
             <User className="h-4 w-4" />
-            <span>{author || 'Loading...'}</span>
+            <span>{author?.name || 'Loading...'}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />

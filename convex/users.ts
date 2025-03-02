@@ -33,8 +33,7 @@ export const getUserWithId = query({
     if (!user) {
       throw new Error("User info unavailable!");
     }
-    console.log(user.name)
-    return user.name;
+    return user;
   },
 });
 

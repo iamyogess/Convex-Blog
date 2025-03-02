@@ -7,7 +7,6 @@ import { api } from "@/convex/_generated/api";
 
 const LatestPosts = () => {
   const posts = useQuery(api.posts.getPosts) || [];
-  console.log(posts)
 
   return (
     <section className="w-full px-6 py-6">
@@ -29,7 +28,6 @@ const LatestPosts = () => {
   );
 };
 
-// Helper component to handle image fetching for each post
 const PostWithImage = ({ post }) => {
   const imageUrl = useQuery(
     api.posts.getPostImageUrl,
