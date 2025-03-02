@@ -116,7 +116,7 @@ export const createPost = zMutation({
       userId,
     });
   },
-});
+}); 
 
 //update post
 export const updatePost = zMutation({
