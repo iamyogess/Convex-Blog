@@ -26,6 +26,17 @@ export const currentUser = query({
   },
 });
 
+export const getUserWithId = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) {
+      throw new Error("User info unavailable!");
+    }
+    return user;
+  },
+});
+
 export const allUsers = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
@@ -67,6 +78,6 @@ export const getImageUrl = query({
     if (!imageUrl) {
       throw new Error(`No file found for storageId: ${args.storageId}`);
     }
-    return imageUrl; 
+    return imageUrl;
   },
 });

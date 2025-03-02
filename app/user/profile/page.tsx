@@ -21,15 +21,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import toast from "react-hot-toast";
-import { Id } from "@/convex/_generated/dataModel"; // Import Id type from Convex
+import { Id } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 
-// Update UserProfile to use Id<"_storage"> for image
 interface UserProfile {
   name?: string;
   pronouns?: string;
   bio?: string;
-  image?: Id<"_storage">; // Use Convex's Id type
+  image?: Id<"_storage">;
 }
 
 const Profile = () => {
@@ -57,7 +56,7 @@ const Profile = () => {
         name: currentUser.name || "",
         pronouns: currentUser.pronouns || "",
         bio: currentUser.bio || "",
-        image: currentUser.image || "", // This is fine as form expects string
+        image: currentUser.image || "",
       });
     }
   }, [currentUser, form]);
@@ -118,7 +117,7 @@ const Profile = () => {
   // Fix the useQuery call to match expected type
   const userImageUrl = useQuery(
     api.users.getImageUrl,
-    currentUser?.image ? { storageId: currentUser.image } : "skip" // Use "skip" instead of undefined
+    currentUser?.image ? { storageId: currentUser.image } : "skip"
   );
 
   return (
@@ -128,7 +127,7 @@ const Profile = () => {
           <div className="h-32 w-32 rounded-full flex justify-center items-center border mb-10 overflow-hidden">
             {previewUrl ? (
               <Image src={previewUrl} alt="Profile preview" className="h-full w-full object-cover" height={200} width={200}/>
-            ) : userImageUrl ? ( // Remove .imageUrl since getImageUrl returns a string
+            ) : userImageUrl ? (
               <Image src={userImageUrl} alt="Profile" className="h-full w-full object-cover" height={200} width={200}/>
             ) : (
               <CameraIcon />

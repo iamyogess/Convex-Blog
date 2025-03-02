@@ -1,68 +1,101 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Image } from "lucide-react";
+import { GalleryHorizontal } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { createPostSchema } from "@/schemas/postSchema";
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 const NewStory = () => {
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const createPost = useMutation(api.posts.createPost);
   const isAllowedToPost = useQuery(api.auth.getMe);
   const isBlogger = isAllowedToPost?.role === "write";
+  const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
 
   const form = useForm<z.infer<typeof createPostSchema>>({
+    resolver: zodResolver(createPostSchema),
     defaultValues: {
       title: "",
       content: "",
       category: "",
+      images: "",
     },
   });
 
-  // const handlePostCreationError = (error: unknown) => {
-  //   if (error instanceof ConvexError && error.data.ZodError) {
-  //     const zodError = error.data.ZodError as ZodIssue[];
-  //     const titleError = zodError.find((err) => err.path.includes("title"));
-  //     if (titleError) {
-  //       form.setError("title", { message: titleError.message });
-  //     }
-  //     'content'
-  //     'category'
-  //   } else {
-  //   }
-  // };
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setSelectedImage(file);
+      setPreviewUrl(url);
+    } else {
+      setSelectedImage(null);
+      setPreviewUrl(null);
+    }
+  };
 
   const handleCreatePost = async (data: z.infer<typeof createPostSchema>) => {
     try {
+      let imageStorageId = data.images;
+
+      if (selectedImage) {
+        const uploadUrl = await generateUploadUrl();
+        const result = await fetch(uploadUrl, {
+          method: "POST",
+          headers: { "Content-Type": selectedImage.type },
+          body: selectedImage,
+        });
+        const { storageId } = await result.json();
+        imageStorageId = storageId;
+      }
+
       await createPost({
         title: data.title,
         content: data.content,
         category: data.category,
+        images: imageStorageId,
       });
       form.reset();
-      toast("Post created!")
+      setSelectedImage(null);
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        setPreviewUrl(null);
+      }
+      toast.success("Post created!");
     } catch (error) {
-      console.log("Post creation error", error);
+      toast.error("Post creation error!");
+      console.error("Post creation error", error);
     }
   };
 
+  if (!isAllowedToPost) return <div className="mt-52">Loading...</div>;
   if (!isBlogger) return <div className="mt-52">You are not a blogger!</div>;
 
   return (
-    <div className="min-h-screen  mt-32 pb-20">
+    <div className="min-h-screen mt-32 pb-20">
       <div className="fixed top-0 w-full bg-background border-b dark:border-gray-800 z-10 mt-20">
         <div className="max-w-screen-md mx-auto px-4 py-3 flex justify-between items-center">
           <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -73,7 +106,7 @@ const NewStory = () => {
             onClick={form.handleSubmit(handleCreatePost)}
             className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6"
           >
-            Publish
+            {form.formState.isSubmitting ? "Publishing..." : "Publish"}
           </Button>
         </div>
       </div>
@@ -83,13 +116,45 @@ const NewStory = () => {
           <form className="space-y-8">
             <div
               className="w-full aspect-[2/1] bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col justify-center items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              onClick={() => console.log("Add image")}
+              onClick={() => imageInputRef.current?.click()}
             >
-              <Image className="h-12 w-12 text-gray-400 mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">
-                Add a cover image
-              </p>
+              {previewUrl ? (
+                <Image
+                  src={previewUrl}
+                  height={400}
+                  width={600}
+                  alt="Selected cover"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ) : (
+                <>
+                  <GalleryHorizontal className="h-12 w-12 text-gray-400 mb-4" />
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Add a cover image
+                  </p>
+                </>
+              )}
             </div>
+
+            <FormField
+              control={form.control}
+              name="images"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Cover Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      ref={imageInputRef}
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
