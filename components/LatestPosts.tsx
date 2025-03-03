@@ -6,6 +6,16 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
+// Define the post type to match what comes from the API
+interface PostType {
+  _id: Id<"posts">;
+  title: string;
+  content: string;
+  category: string;
+  images?: string;
+  userId: Id<"users">;
+}
+
 const LatestPosts = () => {
   const posts = useQuery(api.posts.getPosts) || [];
 
@@ -29,7 +39,8 @@ const LatestPosts = () => {
   );
 };
 
-const PostWithImage = ({ post }) => {
+// Add type annotation for the post parameter
+const PostWithImage = ({ post }: { post: PostType }) => {
   const imageUrl = useQuery(
     api.posts.getPostImageUrl,
     post.images ? { storageId: post.images as Id<"_storage"> } : "skip"

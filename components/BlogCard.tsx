@@ -15,11 +15,11 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
 interface Post {
-  _id: string;
+  _id: Id<"posts">; // Updated from string to match LatestPosts
   title: string;
   content: string;
   category: string;
-  images: string;
+  images?: string; // Made optional to match LatestPosts
   userId: Id<"users">;
 }
 
