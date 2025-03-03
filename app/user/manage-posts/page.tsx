@@ -32,7 +32,6 @@ const ManagePosts = () => {
   const deletePost = useMutation(api.posts.deletePost);
   const [deletingPostId, setDeletingPostId] = useState(null);
 
-  // Pass userId as an object
   const myPosts = useQuery(
     api.posts.getMyPosts,
     currentUser?._id ? { userId: currentUser._id } : "skip"
